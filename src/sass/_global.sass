@@ -1,0 +1,59 @@
+@use 'colors' as *
+
+*
+	box-sizing: border-box
+	padding: 0
+	margin: 0
+	overflow-wrap: break-word
+
+html
+	font-size: 62.5%
+
+body
+	font-family: 'League Spartan', sans-serif
+	font-size: 1.6rem
+
+a
+	text-decoration: unset
+	color: unset
+	cursor: pointer
+
+input
+	font-family: inherit
+	font-size: inherit
+	color: inherit
+	background-color: inherit
+	border: unset
+	outline: unset
+
+button
+	font-family: inherit
+	border: unset
+
+.iconContainer
+	aspect-ratio: 1/1
+	display: grid
+	place-items: center
+	overflow: hidden
+	position: relative
+
+	&--arrow
+		height: 1.2rem
+
+	&--plus
+		height: 3.2rem
+		background-color: white
+		border-radius: 50%
+
+.navigation
+	display: flex
+	align-items: center
+	align-self: flex-start
+	gap: 1.6rem
+	font-weight: 600
+	cursor: pointer
+
+	&__icon
+		color: $purple
+		position: absolute
+		font-size: 2rem
