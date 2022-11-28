@@ -19,9 +19,32 @@
 		border-radius: 100vmax
 
 @mixin button($size, $bg)
-	padding: 1em 1.2em
+	padding: 1em 1.4em
 	font-size: $size
 	background-color: $bg
-	color: #fff
 	font-weight: 600
 	border-radius: 100vmax
+	cursor: pointer
+
+	&:hover
+		opacity: .6
+
+@keyframes error
+	0%
+		bottom: .8rem
+
+	80%
+		bottom: .8rem
+
+	100%
+		bottom: -2rem
+
+@keyframes errorBorder
+	0%
+		border-color: #ec5757
+
+	80%
+		border-color: #ec5757
+
+	100%
+		border-color: transparent

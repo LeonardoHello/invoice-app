@@ -1,15 +1,17 @@
 @use 'colors' as *
 @use 'global' as *
-@use 'keyframes' as *
+@use 'mixins' as *
 
 .app
 	display: grid
 	height: 100vh
 	grid-template-rows: 7.2rem 1fr
+	background-color: var(--boardBg)
 
 .header
 	background-color: $header-bg
 	@include flex(row, stretch, space-between, 1rem)
+	z-index: 3
 
 	&__container
 		display: grid
@@ -25,13 +27,13 @@
 			cursor: pointer
 
 			&:hover::after
-				height: 50%
+				height: 80%
 
 			&::after
 				transition: height .3s
 				position: absolute
 				content: ''
-				height: 80%
+				height: 50%
 				width: 100%
 				align-self: flex-end
 				background-color: $lightPurple
@@ -54,6 +56,10 @@
 	padding: 3.2rem
 	background-color: var(--boardBg)
 	overflow-y: auto
+	align-items: center
+
+	>*
+		width: min(100%, 73rem)
 
 	&__head
 		@include flex(row, center, flex-start, 2rem)
@@ -102,26 +108,52 @@
 	&__body
 		@include flex(column, stretch, flex-start, 1.6rem)
 
+	&__buttons
+		@include flex(row, center, flex-end, 1rem)
+		background-color: var(--cardBg)
+		width: 100%
+		padding: 1.8rem
+
+		&__edit
+			@include button(1.6rem, #252945)
+			color: #fff
+
+		&__delete
+			@include button(1.6rem, #ec5757)
+			color: #fff
+
+		&__paid
+			@include button(1.6rem, $purple)
+			color: #fff
+
 .card
-	@include flex(column, stretch, flex-start, 2.8rem)
+	display: grid
+	justify-content: space-between
+	gap: 3.2rem 1.8rem
 	border-radius: .5rem
 	background-color: var(--cardBg)
 	padding: 2.4rem 2.4rem 3.2rem
 	box-shadow: 0 10px 10px -10px rgb(72 84 159 / 10%)
 	border: 1px solid transparent
 	transition: border-color .3s
+	grid-template-areas: "id clientName" "container status"
 
 	&:hover
 		border-color: $purple
 
-	&__head
-		@include flex(row, center, space-between, 1rem)
+	&__clientName
+		grid-area: clientName
+		text-align: right
 
-	&__body
-		@include flex(row, center, space-between, 1rem)
-
-	&__info
+	&__container
 		@include flex(column, flex-start, flex-start, 1.2rem)
+		grid-area: container
+
+	&__dueDate
+		grid-area: dueDate
+
+	&__price
+		grid-area: price
 
 	&__dueDate
 		font-size: 1.4rem
@@ -133,6 +165,7 @@
 
 .id
 	font-weight: 500
+	grid-area: id
 
 	&__hash
 		color: $hash
@@ -140,6 +173,7 @@
 
 .status
 	@include flex(row, center, center, .8rem)
+	grid-area: status
 	border-radius: .6rem
 	padding: .8em 1.6em
 	font-weight: 600
@@ -148,9 +182,6 @@
 		height: .8rem
 		width: .8rem
 		border-radius: 50%
-
-	&__text
-		font-weight: 300
 
 .invoice
 	@include flex(column, stretch, flex-start, 1.6rem)
@@ -161,7 +192,7 @@
 		border-radius: .5rem
 
 	&__head
-		@include flex(row, center, space-between, 1rem)
+		@include flex(row, center, space-between, 3.2rem)
 		padding: 3.2rem
 
 	&__body
@@ -212,11 +243,38 @@
 	&__clientEmail
 		grid-area: email
 
+	&__buttons
+		@include flex(row, center, flex-end, 1rem)
+		flex-grow: 2
+
+		&__edit
+			@include button(1.6rem, #252945)
+			color: #fff
+
+		&__delete
+			@include button(1.6rem, #ec5757)
+			color: #fff
+
+		&__paid
+			@include button(1.6rem, $purple)
+			color: #fff
+
+.receipt
+	background-color: var(--receipt)
+	border-radius: .8rem
+
 	&__itemList
 		@include flex(column, stretch, flex-start, 2.8rem)
-		background-color: $itemListBg
 		padding: 2.6rem
 		font-weight: 500
+
+	&__grandTotal
+		padding: 3.2rem 2.4rem
+		background-color: var(--grandTotal)
+		font-weight: 700
+		font-size: 2.6rem
+		border-radius: 0 0 .8rem .8rem
+		color: #fff
 
 	&__item, &__grandTotal
 		@include flex(row, center, space-between, 1rem)
@@ -227,12 +285,6 @@
 		&__price
 			font-weight: 600
 
-	&__grandTotal
-		padding: 3.2rem 2.4rem
-		background-color: #000
-		font-weight: 700
-		font-size: 2.6rem
-
 		&__text
 			font-size: 1.6rem
 			font-weight: 300
@@ -241,10 +293,11 @@
 	@include flex(column, stretch, flex-start, 4rem)
 	@include scrollBar(.6rem)
 	position: fixed
+	top: 7.2rem
 	left: -100%
 	height: calc( 100% - 7.2rem )
 	width: 100%
-	padding: 3.2rem 2.4rem
+	padding: 3.2rem 2.4rem 9.6rem
 	background-color: var(--boardBg)
 	overflow-y: auto
 	transition: left .4s, width .4s
@@ -256,13 +309,13 @@
 
 	&__container
 		position: fixed
-		top: 7.2rem
+		top: 0
 		left: 0
-		height: calc( 100% - 7.2rem )
+		height: 100%
 		width: 100%
 		background-color: #00000000
 		pointer-events: none
-		transition: left .4s, background-color .3s
+		transition: background-color .3s
 		z-index: 2
 
 		&--visible
@@ -270,73 +323,208 @@
 			background-color: #00000080
 
 .form
-	@include flex(column, stretch, flex-start, 3.6rem)
+	@include flex(column, stretch, flex-start, 4rem)
+	position: relative
 
 	&__title
-		font-size: 2.8rem
+		font-size: 3rem
 		font-weight: 600
 
-	&__clientInfo
-		display: grid
-		gap: 2.2rem .8rem
-		font-weight: 300
-		max-width: 100%
-
-		&--billFrom
-			grid-template-areas: "billFromTitle billFromTitle" "streetAddress streetAddress" "country city" "postCode postCode"
-
-		&--billTo
-			grid-template-areas: "billToTitle billToTitle" "clientName clientName" "clientEmail clientEmail" "clientStreetAddress clientStreetAddress" "clientCountry clientCity" "clientPostCode clientPostCode" "paymentTerms paymentTerms" "description description"
-
-		&--itemList
-			gap: 4.4rem
-
-		&__item
-			display: grid
-			// grid-template-columns: repeat(3, 1fr)
-			grid-template-areas: "itemName itemName itemName" "quantity price total"
-			gap: 2.2rem .8rem
+	&__fillIn
+		@include flex(column, stretch, flex-start, 2.2rem)
 
 		&__title
 			color: $purple
 			font-weight: 600
 
+			&--gray
+				color: #777f98
+				font-size: 2.6rem
+
+		&__list
+			@include flex(column, stretch, flex-start, 2.8rem)
+
+		&__grid
+			display: grid
+			gap: 2.2rem .8rem
+			font-weight: 300
+
 			&--billFrom
-				grid-area: billFromTitle
+				grid-template-areas: "streetAddress streetAddress" "country city" "postCode postCode"
 
 			&--billTo
-				grid-area: billToTitle
+				grid-template-areas: "clientName clientName" "clientEmail clientEmail" "clientStreetAddress clientStreetAddress" "clientCity clientPostCode" "clientCountry clientCountry" "paymentTerms paymentTerms" "description description"
 
 			&--itemList
-				font-size: 2.6rem
-				color: #777f98
-				font-weight: 600
+				grid-template-columns: repeat(4, 1fr)
+				grid-template-areas: "itemName itemName itemName itemName" "quantity price total total"
+				gap: 1.6rem
 
 	&__addItem
 		@include button(1.6rem, var(--cardBg))
 
+	&__buttons
+		@include flex(row, center, flex-end, .8rem)
+		background-color: var(--formBtns)
+		position: absolute
+		left: -2.4rem
+		width: calc( 100% + 4.8rem )
+		bottom: -12.8rem
+		padding: 1.8rem
+
+		&__submit
+			@include button(1.6rem, $lightPurple)
+			color: #fff
+
+		&__discard
+			@include button(1.6rem, #373b53)
+			color: #fff
+
 .label
 	@include flex(column, stretch, flex-start, 1.2rem)
+	position: relative
 	min-width: 100%
+
+	&__select
+		@include flex(row, center, space-between, unset)
+
+	&__dropdown
+		border-radius: .5rem
+		position: absolute
+		width: 100%
+		top: calc( 100% + 1rem )
+		z-index: 2
+		cursor: pointer
+		box-shadow: 0 10px 10px -10px #00001060
+
+		&__item
+			font-weight: 600
+			background-color: var(--cardBg)
+			padding: 1.2em
+
+			&:hover
+				color: $purple
 
 	&__input
 		background-color: var(--cardBg)
-		padding: 1em 1.2em
+		height: 4.8rem
+		padding: 0 1.2em
 		border-radius: .5rem
 		border: 1px solid transparent
 		transition: border-color .5s
+		font-weight: 600
+
+		&--error
+			animation: errorBorder 3s ease-out
+
+		&__arrow
+			position: absolute
+			right: 2rem
+
+		&--select
+			min-width: 100%
+			user-select: none
+			cursor: pointer
 
 		&:focus
 			border-color: $purple
 
-@media (width >= 768px)
+	&--total &__input
+		background-color: unset
+		padding: 0
+
+		&:focus
+			border-color: transparent
+
+	&__error
+		color: #ec5757
+		font-size: 1.4rem
+		font-weight: 500
+		position: absolute
+		right: 1rem
+		bottom: .8rem
+		animation: error 3s ease-out forwards
+
+@media (width >= 48rem)
+	.card
+		display: grid
+		justify-content: stretch
+		grid-template-columns: repeat(5, 1fr)
+		align-items: center
+		grid-template-areas: "id dueDate clientName price status"
+
+		&__container
+			@include flex(row, center, space-between, 1rem)
+
+		&__clientName
+			text-align: left
+
 	.modal
 		width: 60rem
 
-@media (width >= 1024px)
+	.form__fillIn__grid
+		&--billFrom
+			grid-template-areas: "streetAddress streetAddress streetAddress" "country city postCode"
+
+		&--billTo
+			grid-template-areas: "clientName clientName clientName" "clientEmail clientEmail clientEmail" "clientStreetAddress clientStreetAddress clientStreetAddress" "clientCity clientPostCode clientCountry" "paymentTerms paymentTerms paymentTerms" "description description description"
+
+		&--itemList
+			grid-template-columns: repeat(8, 1fr)
+			grid-template-areas: "itemName itemName itemName quantity price price total total"
+
+	.label
+		&--quantity
+
+		&--quantity &__input
+			text-align: center
+			padding: 0
+
+	.invoice
+		&__body
+			gap: 8rem
+
+		&__clientInfo
+			justify-content: stretch
+			grid-template-areas: "id id billFrom billFrom" "id id billFrom billFrom" "dateCreated billTo email email" "dueDate billTo email email"
+			gap: 3.2rem 4.4rem
+
+		&__billFrom
+			justify-self: flex-end
+
+		&__clientEmail
+			justify-self: center
+
+@media (width >= 72rem)
 	.app
 		grid-template-rows: unset
-		grid-template-columns: 9.6rem 1fr
+		grid-template-columns: 9.8rem 1fr
 
 	.header
 		@include flex(column, stretch, space-between, 1rem)
+		border-radius: 0 2rem 2rem 0
+
+	.board
+		padding: 6.4rem 3.2rem
+		gap: 5rem
+
+		&__title
+			font-size: 4rem
+
+		&__subtitle
+			font-size: 2rem
+
+		&__filter
+			font-size: 1.8rem
+
+	.modal
+		width: 70rem
+		top: 0
+		height: 100%
+
+		&--visible
+			left: 9.8rem
+
+		&__container
+			top: 0
+			height: 100%

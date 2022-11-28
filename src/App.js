@@ -9,7 +9,10 @@ import Home, {
 	loader as homeLoader,
 	action as homeAction,
 } from "./components/pages/Home";
-import Detail, { loader as detailLoader } from "./components/pages/Detail";
+import Detail, {
+	loader as detailLoader,
+	action as detailAction,
+} from "./components/pages/Detail";
 
 const router = createBrowserRouter(
 	createRoutesFromElements(
@@ -24,6 +27,7 @@ const router = createBrowserRouter(
 				path="/invoice/:id"
 				element={<Detail />}
 				loader={detailLoader}
+				action={detailAction}
 			/>
 		</Route>
 	)

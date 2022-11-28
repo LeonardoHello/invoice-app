@@ -28,6 +28,7 @@ input
 
 button
 	font-family: inherit
+	background-color: unset
 	border: unset
 
 .iconContainer
@@ -45,10 +46,34 @@ button
 		background-color: white
 		border-radius: 50%
 
+	&--trash
+		height: 2.2rem
+		right: 0
+		bottom: 1.4rem
+		position: absolute
+
+	&__icon
+		font-size: 2.2rem
+		font-weight: 600
+		position: absolute
+		color: $purple
+
+		&--arrow
+			font-size: 2.2rem
+
+		&--plus
+			font-size: 1.8rem
+
+		&--trash
+			color: #7e88c3
+			cursor: pointer
+
+			&:hover
+				color: #ec5757
+
 .navigation
 	display: flex
 	align-items: center
-	align-self: flex-start
 	gap: 1.6rem
 	font-weight: 600
 	cursor: pointer
